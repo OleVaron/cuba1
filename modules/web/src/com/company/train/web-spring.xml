@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:gui="http://schemas.haulmont.com/cuba/spring/cuba-gui.xsd">
+
+    <!-- Annotation-based beans -->
+    <context:component-scan base-package="com.company.train"/>
+    
+    <gui:screens base-packages="com.company.train.web"/>
+    <bean id="train_proxyCreator" class="com.haulmont.cuba.web.sys.remoting.WebRemoteProxyBeanCreator">
+        <property name="serverSelector" ref="cuba_ServerSelector"/>
+        <property name="remoteServices">
+            <map>
+                <entry key="train_StagesService" value="com.company.train.service.StagesService"/>
+                <entry key="train_ContractStatusService" value="com.company.train.service.ContractStatusService"/>
+            </map>
+        </property>
+    </bean>
+
+</beans>

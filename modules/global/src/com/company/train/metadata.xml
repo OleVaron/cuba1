@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<metadata xmlns="http://schemas.haulmont.com/cuba/metadata.xsd">
+
+    <metadata-model root-package="com.company.train" namespace="train">
+        <class>com.company.train.entity.SummaryPrice</class>
+        <class>com.company.train.entity.Contract</class>
+    </metadata-model>
+
+</metadata>

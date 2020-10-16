@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://chart.caption"
+        messagesPack="com.company.train.web.screens"
+        xmlns:chart="http://schemas.haulmont.com/charts/charts.xsd">
+    <data>
+        <collection id="contractDC"
+                    class="com.company.train.entity.Contract"
+                    view="_local"/>
+    </data>
+    <layout>
+        <chart:serialChart id="chart"
+                           angle="30"
+                           categoryField="number"
+                           dataContainer="contractDC"
+                           depth3D="60"
+                           height="100%"
+                           plotAreaFillAlphas="0.1"
+                           startDuration="1"
+                           width="100%">
+            <chart:categoryAxis gridPosition="START"/>
+            <chart:valueAxes>
+                <chart:axis position="LEFT"
+                            stackType="BOX_3D"
+                            title="Contract summary"
+                            unit="Р"/>
+            </chart:valueAxes>
+            <chart:graphs>
+                <chart:graph id="Summary"
+                             balloonText="Summary amount for contract №[[number]]: &lt;b&gt;[[value]]&lt;/b&gt;"
+                             fillAlphas="09."
+                             lineAlpha="0.2"
+                             title="summary"
+                             type="COLUMN"
+                             valueField="totalAmount"/>
+            </chart:graphs>
+            <chart:export/>
+        </chart:serialChart>
+    </layout>
+</window>

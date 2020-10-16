@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://contractBrowse.caption"
+        focusComponent="contractsTable"
+        messagesPack="com.company.train.web.screens.contract"
+        xmlns:chart="http://schemas.haulmont.com/charts/charts.xsd">
+    <data readOnly="true">
+        <collection id="contractsDc"
+                    class="com.company.train.entity.Contract">
+            <view extends="_local">
+                <property name="customer" view="_minimal"/>
+                <property name="performer" view="_minimal"/>
+                <property name="stages" view="_local"/>
+            </view>
+            <loader id="contractsDl">
+                <query>
+                    <![CDATA[select e from train_Contract e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="contractsTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="contractsTable"
+                dataLoader="contractsDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="contractsTable"
+                    width="100%"
+                    dataContainer="contractsDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="generateInvoiceAndSCC" caption="msg://generateInvoice"/>
+            </actions>
+            <columns>
+                <column id="customer"/>
+                <column id="performer"/>
+                <column id="number"/>
+                <column id="signedDate"/>
+                <column id="dateFrom"/>
+                <column id="dateTo"/>
+                <column id="amount"/>
+                <column id="vat"/>
+                <column id="totalAmount"/>
+                <column id="customerSigner"/>
+                <column id="performerSigner"/>
+                <column id="stages"/>
+                <column id="status"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="contractsTable.create"/>
+                <button id="editBtn" action="contractsTable.edit"/>
+                <button id="removeBtn" action="contractsTable.remove"/>
+                <button id="generateInvoiceAndSCCBtn" action="contractsTable.generateInvoiceAndSCC"/>
+            </buttonsPanel>
+        </groupTable>
+        <chart:pieChart id="pieChart"
+                        titleField="key"
+                        valueField="value"/>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

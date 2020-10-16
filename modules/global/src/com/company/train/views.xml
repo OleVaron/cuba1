@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<views xmlns="http://schemas.haulmont.com/cuba/view.xsd">
+
+    <view entity="train_Contract" name="contract-view" extends="_local">
+        <property name="customer" view="_minimal">
+            <property name="email"/>
+        </property>
+        <property name="performer" view="_minimal">
+            <property name="email"/>
+        </property>
+        <property name="stages" view="_minimal"/>
+    </view>
+</views>

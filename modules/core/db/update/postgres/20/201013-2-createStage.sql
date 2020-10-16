@@ -1,0 +1,2 @@
+alter table TRAIN_STAGE add constraint FK_TRAIN_STAGE_ON_CONTRACT foreign key (CONTRACT_ID) references TRAIN_CONTRACT(ID);
+create index IDX_TRAIN_STAGE_ON_CONTRACT on TRAIN_STAGE (CONTRACT_ID);

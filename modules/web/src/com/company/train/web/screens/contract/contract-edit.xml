@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://contractEdit.caption"
+        focusComponent="form"
+        messagesPack="com.company.train.web.screens.contract">
+    <data>
+        <instance id="contractDc"
+                  class="com.company.train.entity.Contract">
+            <view extends="_local">
+                <property name="customer" view="_minimal"/>
+                <property name="performer" view="_minimal"/>
+                <property name="stages" view="_minimal"/>
+            </view>
+            <loader/>
+            <collection id="stagesDc" property="stages"/>
+        </instance>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="scrollBox" spacing="true">
+        <scrollBox id="scrollBox" spacing="true">
+            <form id="form" dataContainer="contractDc">
+                <column width="350px">
+                    <pickerField id="customerField" property="customer">
+                        <actions>
+                            <action id="lookup" type="picker_lookup"/>
+                            <action id="clear" type="picker_clear"/>
+                        </actions>
+                    </pickerField>
+                    <pickerField id="performerField" property="performer">
+                        <actions>
+                            <action id="lookup" type="picker_lookup"/>
+                            <action id="clear" type="picker_clear"/>
+                        </actions>
+                    </pickerField>
+                    <dateField id="signedDateField" property="signedDate"/>
+                    <dateField id="dateFromField" property="dateFrom"/>
+                    <dateField id="dateToField" property="dateTo"/>
+                    <textField id="amountField" property="amount"/>
+                    <textField id="customerSignerField" property="customerSigner"/>
+                    <textField id="performerSignerField" property="performerSigner"/>
+                </column>
+            </form>
+            <groupBox id="stagesBox" caption="msg://com.company.train.entity/Contract.stages">
+                <table id="stagesTable" dataContainer="stagesDc" width="100%" height="200px">
+                    <actions>
+                        <action id="create" type="create"/>
+                        <action id="edit" type="edit"/>
+                        <action id="remove" type="remove"/>
+                    </actions>
+                    <columns>
+                        <column id="name"/>
+                    </columns>
+                    <buttonsPanel>
+                        <button action="stagesTable.create"/>
+                        <button action="stagesTable.edit"/>
+                        <button action="stagesTable.remove"/>
+                    </buttonsPanel>
+                </table>
+            </groupBox>
+        </scrollBox>
+        <hbox id="editActions" spacing="true">
+            <button action="windowCommitAndClose"/>
+            <button action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
+    <menu id="application-train" insertBefore="administration" caption="mainMsg://menu_config.application-train">
+        <item screen="train_Organization.browse" caption="mainMsg://menu_config.train_Organization.browse"/>
+        <item screen="train_Contract.browse" caption="mainMsg://menu_config.train_Contract.browse"/>
+        <item screen="train_ServiceCompletionCertificate.browse"
+              caption="mainMsg://menu_config.train_ServiceCompletionCertificate.browse"/>
+        <item screen="train_Invoice.browse" caption="mainMsg://menu_config.train_Invoice.browse"/>
+        <item screen="train_Chart" caption="mainMsg://menu_config.train_Chart"/>
+        <!-- <item screen="train_Stage.browse" caption="mainMsg://menu_config.train_Stage.browse"/> -->
+    </menu>
+</menu-config>

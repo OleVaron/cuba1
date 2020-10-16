@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://stageEdit.caption"
+        focusComponent="form"
+        messagesPack="com.company.train.web.screens.stage">
+    <data>
+        <instance id="stageDc"
+                  class="com.company.train.entity.Stage">
+            <view extends="_local"/>
+            <loader/>
+        </instance>
+    </data>
+    <dialogMode height="AUTO"
+                width="AUTO"
+                modal="true"
+                forceDialog="true"/>
+    <layout expand="editActions" spacing="true">
+        <form id="form" dataContainer="stageDc">
+            <column width="350px">
+                <textField id="nameField" property="name"/>
+                <dateField id="dateFromField" property="dateFrom"/>
+                <dateField id="dateToField" property="dateTo"/>
+                <textField id="amountField" property="amount"/>
+                <textArea id="descriptionField" property="description" rows="5"/>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button action="windowCommitAndClose"/>
+            <button action="windowClose"/>
+        </hbox>
+    </layout>
+</window>
