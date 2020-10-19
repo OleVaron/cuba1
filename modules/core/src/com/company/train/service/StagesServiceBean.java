@@ -50,27 +50,39 @@ public class StagesServiceBean implements StagesService {
     @Override
     public void generateInvoicesAndActsFromStages(List<Stage> stages) {
         for (Stage stage: stages) {
-            Stage reloadedStage = reloadStageFromSeparatedTransaction(stage);
-            generateInvoiceFromStage(reloadedStage);
-            generateReportForInvoice(reloadedStage);
-            generateServiceCompletionCertificateFromStage(reloadedStage);
+//            Stage reloadedStage = reloadStageFromSeparatedTransaction(stage);
+            generateDocuments(stage);
+            generateReportForInvoice(stage);
+
         }
     }
 
-    protected Stage reloadStageFromSeparatedTransaction(Stage stage) {
+//    protected Stage reloadStageFromSeparatedTransaction(Stage stage) {
+//        Transaction tx = persistence.createTransaction();
+//        try {
+//
+//            tx.commit();
+//        } finally {
+//            tx.end();
+//        }
+//        return stage;
+//    }
+
+    protected void generateDocuments(Stage stage) {
         Transaction tx = persistence.createTransaction();
         try {
             stage = persistence.getEntityManager().reload(stage, View.LOCAL);
+            generateInvoiceFromStage(stage);
+            generateServiceCompletionCertificateFromStage(stage);
         } finally {
             tx.end();
         }
-        return stage;
     }
 
 
     protected void generateServiceCompletionCertificateFromStage(Stage stage) {
-        Transaction tx = persistence.createTransaction();
-        try {
+//        Transaction tx = persistence.createTransaction();
+//        try {
             ServiceCompletionCertificate scc = metadata.create(ServiceCompletionCertificate.class);
             scc.setStage(stage);
             scc.setVat(stage.getVat());
@@ -80,14 +92,14 @@ public class StagesServiceBean implements StagesService {
             scc.setDescription(stage.getDescription());
             scc.setNumber(((Long)uniqueNumbersAPI.getNextNumber("SERVICE_COMPLETION_CERTIFICATE")).intValue());
             persistence.getEntityManager().persist(scc);
-        } finally {
-            tx.end();
-        }
+//        } finally {
+//            tx.end();
+//        }
     }
 
     protected void generateInvoiceFromStage(Stage stage) {
-        Transaction tx = persistence.createTransaction();
-        try {
+//        Transaction tx = persistence.createTransaction();
+//        try {
             Invoice invoice = metadata.create(Invoice.class);
             invoice.setStage(stage);
             invoice.setVat(stage.getVat());
@@ -97,16 +109,16 @@ public class StagesServiceBean implements StagesService {
             invoice.setDescription(stage.getDescription());
             invoice.setNumber(((Long)uniqueNumbersAPI.getNextNumber("INVOICE")).intValue());
             persistence.getEntityManager().persist(invoice);
-            tx.commit();
-        } finally {
-            tx.end();
-        }
+//            tx.commit();
+//        } finally {
+//            tx.end();
+//        }
     }
-
 
     protected void generateReportForInvoice(Stage stage) {
         Transaction tx = persistence.createTransaction();
         try {
+            stage = persistence.getEntityManager().reload(stage, View.LOCAL);
             Invoice invoice = stage.getInvoice();
             Report report = dataManager.load(Report.class)
                     .query("select r from report$Report r where r.name = :report_name")
@@ -119,6 +131,7 @@ public class StagesServiceBean implements StagesService {
             hm.put("entity", reloaded);
             invoice.setFiles(Collections.singletonList(reportService.createAndSaveReport(report, hm, "Invoice")));
             persistence.getEntityManager().persist(invoice);
+            tx.commit();
         } finally {
             tx.end();
         }

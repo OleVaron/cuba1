@@ -42,6 +42,7 @@
                 <column id="vat"/>
                 <column id="totalAmount"/>
                 <column id="description"/>
+                <column id="files"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"
