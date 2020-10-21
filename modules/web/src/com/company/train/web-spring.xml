@@ -7,6 +7,8 @@
     <context:component-scan base-package="com.company.train"/>
     
     <gui:screens base-packages="com.company.train.web"/>
+    <gui:actions base-packages="com.company.train.gui.components.actions"/>
+
     <bean id="train_proxyCreator" class="com.haulmont.cuba.web.sys.remoting.WebRemoteProxyBeanCreator">
         <property name="serverSelector" ref="cuba_ServerSelector"/>
         <property name="remoteServices">
@@ -15,6 +17,7 @@
                 <entry key="train_ContractStatusService" value="com.company.train.service.ContractStatusService"/>
             </map>
         </property>
+
     </bean>
 
 </beans>
