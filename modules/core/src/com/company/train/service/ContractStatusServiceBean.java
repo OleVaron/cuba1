@@ -6,11 +6,13 @@ import com.haulmont.addon.bproc.events.UserTaskAssignedEvent;
 import com.haulmont.cuba.core.app.EmailService;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.EmailInfo;
+import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.core.global.View;
 import com.haulmont.cuba.security.entity.User;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -22,11 +24,18 @@ import java.util.Map;
 
 @Service(ContractStatusService.NAME)
 public class ContractStatusServiceBean implements ContractStatusService {
-    private static final Logger log = org.slf4j.LoggerFactory.getLogger(ContractStatusServiceBean.class);
+
+    private static final Logger log = LoggerFactory.getLogger(ContractStatusServiceBean.class);
+    public static final String CONTRACT_VIEW = "contract-view";
+    public static final String STATUS_FOR_CONTRACT_HAS_BEEN_CHANGED_ON = "Status for contract has been changed on ";
+    public static final String COM_HAULMONT_BPROC_REF_NOTIFICATION_TASK_EMAIL_BODY_TEMPLATE = "com/haulmont/bproc/ref/notification/task-email-body.template";
+
     @Inject
     private DataManager dataManager;
     @Inject
     private EmailService emailService;
+    @Inject
+    private Messages messages;
 
     @Override
     public void setStatus(Contract contract, String status) {
@@ -37,11 +46,10 @@ public class ContractStatusServiceBean implements ContractStatusService {
     }
 
     protected void sendEmail(Contract contract, String status) {
-        //contract-view
-        Contract reloadedContract = dataManager.reload(contract , "contract-view");
+        Contract reloadedContract = dataManager.reload(contract , CONTRACT_VIEW);
         for (String email: Arrays.asList(reloadedContract.getPerformer().getEmail(), reloadedContract.getCustomer().getEmail())) {
-            String emailTitle = "Status for contract has been changed on " + status;
-            String emailBodyTemplatePath = "com/haulmont/bproc/ref/notification/task-email-body.template";
+            String emailTitle = STATUS_FOR_CONTRACT_HAS_BEEN_CHANGED_ON + status;
+            String emailBodyTemplatePath = COM_HAULMONT_BPROC_REF_NOTIFICATION_TASK_EMAIL_BODY_TEMPLATE;
             Map<String, Serializable> templateParameters = new HashMap<>();
             EmailInfo emailInfo = new EmailInfo(
                     email,

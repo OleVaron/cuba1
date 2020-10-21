@@ -1,17 +1,17 @@
 package com.company.train.core;
 
+import com.company.train.config.ContractNumSeqConfig;
+import com.company.train.config.DefaultStageNameConfig;
 import com.company.train.config.VatConfig;
 import com.company.train.entity.Contract;
 import com.company.train.entity.Stage;
 import com.haulmont.cuba.core.EntityManager;
 import com.haulmont.cuba.core.Persistence;
 import com.haulmont.cuba.core.app.UniqueNumbersAPI;
-import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.Configuration;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.Metadata;
 import com.haulmont.cuba.core.listener.BeforeInsertEntityListener;
-import com.haulmont.reports.app.service.ReportService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -25,13 +25,9 @@ public class ContractEntityListener implements BeforeInsertEntityListener<Contra
     @Inject
     private Metadata metadata;
     @Inject
-    private DataManager dataManager;
-    @Inject
     private UniqueNumbersAPI uniqueNumbersAPI;
     @Inject
     private Configuration configuration;
-    @Inject
-    private ReportService reportService;
 
     public ContractEntityListener() {
         super();
@@ -39,7 +35,7 @@ public class ContractEntityListener implements BeforeInsertEntityListener<Contra
 
     @Override
     public void onBeforeInsert(Contract contract, EntityManager entityManager) {
-        contract.setNumber(((Long)(uniqueNumbersAPI.getNextNumber("CONTRACT_NUM"))).intValue());//todo to CONG
+        contract.setNumber(((Long)(uniqueNumbersAPI.getNextNumber(configuration.getConfig(ContractNumSeqConfig.class).getSequenceName()))).intValue());
         populateSummary(contract);
         if (CollectionUtils.isEmpty(contract.getStages())) {
             persistence.getEntityManager().persist(getStageFromContract(contract));
@@ -59,7 +55,7 @@ public class ContractEntityListener implements BeforeInsertEntityListener<Contra
     protected Stage getStageFromContract(Contract contract) {
         Stage stage = metadata.create(Stage.class);
 
-        stage.setName("Default stage");//todo to CONG
+        stage.setName(configuration.getConfig(DefaultStageNameConfig.class).getDefaultName());
         stage.setAmount(contract.getAmount());
         stage.setContract(contract);
         stage.setVat(contract.getVat());

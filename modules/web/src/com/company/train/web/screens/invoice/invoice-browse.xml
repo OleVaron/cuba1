@@ -47,7 +47,7 @@
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"
                           alwaysVisible="true">
-                <button id="editBtn" action="invoicesTable.edit"/>
+<!--                <button id="editBtn" action="invoicesTable.edit"/>-->
                 <button id="removeBtn" action="invoicesTable.remove"/>
             </buttonsPanel>
         </groupTable>

@@ -10,4 +10,8 @@
         </property>
         <property name="stages" view="_minimal"/>
     </view>
+    <view entity="train_Stage" name="stage-view" extends="_local">
+        <property name="serviceCompletionCertificate" view="_minimal"/>
+        <property name="invoice" view="_minimal"/>
+    </view>
 </views>
