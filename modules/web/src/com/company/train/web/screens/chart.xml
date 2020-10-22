@@ -13,7 +13,7 @@
                            angle="30"
                            categoryField="number"
                            dataContainer="contractDC"
-                           depth3D="60"
+                           depth3D="20"
                            height="100%"
                            plotAreaFillAlphas="0.1"
                            startDuration="1"

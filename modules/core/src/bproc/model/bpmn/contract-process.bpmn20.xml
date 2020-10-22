@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:bproc="http://schemas.haulmont.com/bproc/bpmn" xmlns:flowable="http://flowable.org/bpmn" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.flowable.org/processdef">
+  <collaboration id="Collaboration_0zv4uwe">
+    <participant id="Participant_1odt1r3" processRef="contract-process" />
+  </collaboration>
+  <process id="contract-process" name="Contract process" isExecutable="true">
+    <laneSet id="LaneSet_1ym20y8">
+      <lane id="Lane_16xe4w6" name="initiator" />
+      <lane id="Lane_06onegi" name="manager">
+        <extensionElements>
+          <bproc:assignmentDetails assigneeSource="processVariable" assigneeValue="administrator" assignee="${administrator.id}" candidateUsersSource="users" candidateGroupsSource="userGroups" />
+        </extensionElements>
+        <flowNodeRef>startEvent1</flowNodeRef>
+        <flowNodeRef>Task_1dwi8oz</flowNodeRef>
+        <flowNodeRef>ExclusiveGateway_0tzab2i</flowNodeRef>
+        <flowNodeRef>Task_0bpwrtq</flowNodeRef>
+        <flowNodeRef>Task_1pmx70r</flowNodeRef>
+        <flowNodeRef>ExclusiveGateway_1uuwl9p</flowNodeRef>
+        <flowNodeRef>Task_09kj2z0</flowNodeRef>
+        <flowNodeRef>ExclusiveGateway_13o0cp3</flowNodeRef>
+        <flowNodeRef>Task_0qagi64</flowNodeRef>
+        <flowNodeRef>EndEvent_02ddl96</flowNodeRef>
+        <flowNodeRef>EndEvent_1i5bn2v</flowNodeRef>
+      </lane>
+    </laneSet>
+    <startEvent id="startEvent1">
+      <extensionElements>
+        <bproc:formData type="no-form" />
+        <bproc:processVariables>
+          <bproc:processVariable name="contract" type="entity" />
+          <bproc:processVariable name="administrator" type="user" />
+        </bproc:processVariables>
+      </extensionElements>
+      <outgoing>SequenceFlow_09xyu3w</outgoing>
+    </startEvent>
+    <sequenceFlow id="SequenceFlow_09xyu3w" sourceRef="startEvent1" targetRef="Task_1dwi8oz" />
+    <userTask id="Task_1dwi8oz" name="Confirm the Contract" flowable:assignee="${train_ManagerProvider.getForProcess(execution.id)}" bproc:assigneeSource="userProvider" bproc:assigneeValue="train_ManagerProvider">
+      <extensionElements>
+        <bproc:formData type="input-dialog" openMode="DIALOG">
+          <bproc:formFields>
+            <bproc:formField id="contract" caption="Contract" type="entity" editable="false" required="false">
+              <bproc:formFieldProperty name="uiComponent" value="pickerField" />
+              <bproc:formFieldProperty name="entityName" value="train_Contract" />
+            </bproc:formField>
+          </bproc:formFields>
+          <bproc:formOutcomes>
+            <bproc:formOutcome id="Aproval" caption="Aproval" icon="font-icon:CHECK" />
+            <bproc:formOutcome id="Cancel" caption="Cancel" icon="font-icon:BAN" />
+          </bproc:formOutcomes>
+        </bproc:formData>
+      </extensionElements>
+      <incoming>SequenceFlow_09xyu3w</incoming>
+      <outgoing>SequenceFlow_1nes01k</outgoing>
+    </userTask>
+    <exclusiveGateway id="ExclusiveGateway_0tzab2i">
+      <incoming>SequenceFlow_1nes01k</incoming>
+      <outgoing>SequenceFlow_1idvghr</outgoing>
+      <outgoing>SequenceFlow_00z35oz</outgoing>
+    </exclusiveGateway>
+    <sequenceFlow id="SequenceFlow_1nes01k" sourceRef="Task_1dwi8oz" targetRef="ExclusiveGateway_0tzab2i" />
+    <sequenceFlow id="SequenceFlow_1idvghr" name="Cancel" sourceRef="ExclusiveGateway_0tzab2i" targetRef="Task_0bpwrtq">
+      <extensionElements>
+        <bproc:conditionDetails conditionSource="userTaskOutcome" conditionType="anyoneCompleted" userTaskId="Task_1dwi8oz" userTaskOutcome="Cancel" />
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression">${execution.getVariable('Task_1dwi8oz_result') != null &amp;&amp; bproc_UserTaskResults.containsOutcome(execution.getVariable('Task_1dwi8oz_result'), 'Cancel')}</conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="Task_0bpwrtq" name="Set the Cancelled status" flowable:expression="${train_ContractStatusService.setStatus(contract, &#39;Cancel&#39;)}" bproc:taskType="springBean">
+      <extensionElements>
+        <bproc:springBean beanName="train_ContractStatusService" methodName="setStatus">
+          <bproc:methodParam name="contract" type="com.company.train.entity.Contract" isVariable="true">contract</bproc:methodParam>
+          <bproc:methodParam name="status" type="java.lang.String" isVariable="false">Cancel</bproc:methodParam>
+        </bproc:springBean>
+      </extensionElements>
+      <incoming>SequenceFlow_1idvghr</incoming>
+      <incoming>SequenceFlow_0mmmki5</incoming>
+      <incoming>SequenceFlow_0uh84db</incoming>
+      <outgoing>SequenceFlow_10vlkg3</outgoing>
+    </serviceTask>
+    <sequenceFlow id="SequenceFlow_10vlkg3" sourceRef="Task_0bpwrtq" targetRef="EndEvent_1i5bn2v" />
+    <sequenceFlow id="SequenceFlow_00z35oz" name="Aproval" sourceRef="ExclusiveGateway_0tzab2i" targetRef="Task_1pmx70r">
+      <extensionElements>
+        <bproc:conditionDetails conditionSource="userTaskOutcome" conditionType="anyoneCompleted" userTaskId="Task_1dwi8oz" userTaskOutcome="Aproval" />
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression">${execution.getVariable('Task_1dwi8oz_result') != null &amp;&amp; bproc_UserTaskResults.containsOutcome(execution.getVariable('Task_1dwi8oz_result'), 'Aproval')}</conditionExpression>
+    </sequenceFlow>
+    <userTask id="Task_1pmx70r" name="Active the contract">
+      <extensionElements>
+        <bproc:formData type="input-dialog" openMode="DIALOG">
+          <bproc:formFields>
+            <bproc:formField id="contract" caption="Contract" type="entity" editable="false" required="false">
+              <bproc:formFieldProperty name="uiComponent" value="pickerField" />
+              <bproc:formFieldProperty name="entityName" value="train_Contract" />
+            </bproc:formField>
+          </bproc:formFields>
+          <bproc:formOutcomes>
+            <bproc:formOutcome id="Active" caption="Active" icon="font-icon:ANGELLIST" />
+            <bproc:formOutcome id="Cancel" caption="Cancel" icon="font-icon:BAN" />
+          </bproc:formOutcomes>
+        </bproc:formData>
+      </extensionElements>
+      <incoming>SequenceFlow_00z35oz</incoming>
+      <outgoing>SequenceFlow_07uynis</outgoing>
+    </userTask>
+    <sequenceFlow id="SequenceFlow_07uynis" sourceRef="Task_1pmx70r" targetRef="ExclusiveGateway_1uuwl9p" />
+    <exclusiveGateway id="ExclusiveGateway_1uuwl9p">
+      <incoming>SequenceFlow_07uynis</incoming>
+      <outgoing>SequenceFlow_0mmmki5</outgoing>
+      <outgoing>SequenceFlow_00ztwxd</outgoing>
+    </exclusiveGateway>
+    <sequenceFlow id="SequenceFlow_0mmmki5" name="Cancel" sourceRef="ExclusiveGateway_1uuwl9p" targetRef="Task_0bpwrtq">
+      <extensionElements>
+        <bproc:conditionDetails conditionSource="userTaskOutcome" conditionType="anyoneCompleted" userTaskId="Task_1pmx70r" userTaskOutcome="Cancel" />
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression">${execution.getVariable('Task_1pmx70r_result') != null &amp;&amp; bproc_UserTaskResults.containsOutcome(execution.getVariable('Task_1pmx70r_result'), 'Cancel')}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="SequenceFlow_00ztwxd" name="active" sourceRef="ExclusiveGateway_1uuwl9p" targetRef="Task_09kj2z0">
+      <extensionElements>
+        <bproc:conditionDetails conditionSource="userTaskOutcome" conditionType="anyoneCompleted" userTaskId="Task_1pmx70r" userTaskOutcome="Active" />
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression">${execution.getVariable('Task_1pmx70r_result') != null &amp;&amp; bproc_UserTaskResults.containsOutcome(execution.getVariable('Task_1pmx70r_result'), 'Active')}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="SequenceFlow_0oe89pt" sourceRef="Task_09kj2z0" targetRef="ExclusiveGateway_13o0cp3" />
+    <userTask id="Task_09kj2z0" name="Complete">
+      <extensionElements>
+        <bproc:formData type="input-dialog" openMode="DIALOG">
+          <bproc:formFields>
+            <bproc:formField id="contract" caption="Contract" type="entity" editable="false" required="false">
+              <bproc:formFieldProperty name="uiComponent" value="pickerField" />
+              <bproc:formFieldProperty name="entityName" value="train_Contract" />
+            </bproc:formField>
+          </bproc:formFields>
+          <bproc:formOutcomes>
+            <bproc:formOutcome id="Complete" caption="Complete" />
+            <bproc:formOutcome id="Cancel" caption="Cancel" />
+          </bproc:formOutcomes>
+        </bproc:formData>
+      </extensionElements>
+      <incoming>SequenceFlow_00ztwxd</incoming>
+      <outgoing>SequenceFlow_0oe89pt</outgoing>
+    </userTask>
+    <exclusiveGateway id="ExclusiveGateway_13o0cp3">
+      <incoming>SequenceFlow_0oe89pt</incoming>
+      <outgoing>SequenceFlow_0uh84db</outgoing>
+      <outgoing>SequenceFlow_10s2hnx</outgoing>
+    </exclusiveGateway>
+    <sequenceFlow id="SequenceFlow_0uh84db" name="Cancel" sourceRef="ExclusiveGateway_13o0cp3" targetRef="Task_0bpwrtq">
+      <extensionElements>
+        <bproc:conditionDetails conditionSource="userTaskOutcome" conditionType="anyoneCompleted" userTaskId="Task_09kj2z0" userTaskOutcome="Cancel" />
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression">${execution.getVariable('Task_09kj2z0_result') != null &amp;&amp; bproc_UserTaskResults.containsOutcome(execution.getVariable('Task_09kj2z0_result'), 'Cancel')}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="SequenceFlow_10s2hnx" name="complete" sourceRef="ExclusiveGateway_13o0cp3" targetRef="Task_0qagi64">
+      <extensionElements>
+        <bproc:conditionDetails conditionSource="userTaskOutcome" conditionType="anyoneCompleted" userTaskId="Task_09kj2z0" userTaskOutcome="Complete" />
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression">${execution.getVariable('Task_09kj2z0_result') != null &amp;&amp; bproc_UserTaskResults.containsOutcome(execution.getVariable('Task_09kj2z0_result'), 'Complete')}</conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="Task_0qagi64" name="Complete" flowable:expression="${train_ContractStatusService.setStatus(contract, &#39;Complete&#39;)}" bproc:taskType="springBean">
+      <extensionElements>
+        <bproc:springBean beanName="train_ContractStatusService" methodName="setStatus">
+          <bproc:methodParam name="contract" type="com.company.train.entity.Contract" isVariable="true">contract</bproc:methodParam>
+          <bproc:methodParam name="status" type="java.lang.String" isVariable="false">Complete</bproc:methodParam>
+        </bproc:springBean>
+      </extensionElements>
+      <incoming>SequenceFlow_10s2hnx</incoming>
+      <outgoing>SequenceFlow_0c61sd9</outgoing>
+    </serviceTask>
+    <endEvent id="EndEvent_02ddl96">
+      <incoming>SequenceFlow_0c61sd9</incoming>
+    </endEvent>
+    <sequenceFlow id="SequenceFlow_0c61sd9" sourceRef="Task_0qagi64" targetRef="EndEvent_02ddl96" />
+    <endEvent id="EndEvent_1i5bn2v">
+      <incoming>SequenceFlow_10vlkg3</incoming>
+    </endEvent>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_process">
+    <bpmndi:BPMNPlane id="BPMNPlane_process" bpmnElement="Collaboration_0zv4uwe">
+      <bpmndi:BPMNShape id="Participant_1odt1r3_di" bpmnElement="Participant_1odt1r3" isHorizontal="true">
+        <omgdc:Bounds x="97" y="40" width="1101" height="672" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_startEvent1" bpmnElement="startEvent1">
+        <omgdc:Bounds x="182" y="85" width="30" height="30" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_16xe4w6_di" bpmnElement="Lane_16xe4w6" isHorizontal="true">
+        <omgdc:Bounds x="127" y="558" width="1071" height="154" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_09xyu3w_di" bpmnElement="SequenceFlow_09xyu3w">
+        <omgdi:waypoint x="212" y="100" />
+        <omgdi:waypoint x="262" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_0vjp2d2_di" bpmnElement="Task_1dwi8oz">
+        <omgdc:Bounds x="262" y="60" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_0tzab2i_di" bpmnElement="ExclusiveGateway_0tzab2i" isMarkerVisible="true">
+        <omgdc:Bounds x="412" y="75" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1nes01k_di" bpmnElement="SequenceFlow_1nes01k">
+        <omgdi:waypoint x="362" y="100" />
+        <omgdi:waypoint x="412" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1idvghr_di" bpmnElement="SequenceFlow_1idvghr">
+        <omgdi:waypoint x="462" y="100" />
+        <omgdi:waypoint x="512" y="100" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="470" y="82" width="35" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_07qgc9d_di" bpmnElement="Task_0bpwrtq">
+        <omgdc:Bounds x="512" y="60" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1i5bn2v_di" bpmnElement="EndEvent_1i5bn2v">
+        <omgdc:Bounds x="787" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_10vlkg3_di" bpmnElement="SequenceFlow_10vlkg3">
+        <omgdi:waypoint x="612" y="100" />
+        <omgdi:waypoint x="787" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_00z35oz_di" bpmnElement="SequenceFlow_00z35oz">
+        <omgdi:waypoint x="437" y="125" />
+        <omgdi:waypoint x="437" y="196" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="415" y="137" width="37" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_0jujvha_di" bpmnElement="Task_1pmx70r">
+        <omgdc:Bounds x="387" y="196" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_1uuwl9p_di" bpmnElement="ExclusiveGateway_1uuwl9p" isMarkerVisible="true">
+        <omgdc:Bounds x="412" y="309" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_07uynis_di" bpmnElement="SequenceFlow_07uynis">
+        <omgdi:waypoint x="437" y="276" />
+        <omgdi:waypoint x="437" y="309" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0mmmki5_di" bpmnElement="SequenceFlow_0mmmki5">
+        <omgdi:waypoint x="462" y="334" />
+        <omgdi:waypoint x="562" y="334" />
+        <omgdi:waypoint x="562" y="140" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="495" y="316" width="35" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Lane_06onegi_di" bpmnElement="Lane_06onegi" isHorizontal="true">
+        <omgdc:Bounds x="127" y="40" width="1071" height="518" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_00ztwxd_di" bpmnElement="SequenceFlow_00ztwxd">
+        <omgdi:waypoint x="437" y="359" />
+        <omgdi:waypoint x="437" y="412" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="438" y="383" width="29" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ExclusiveGateway_13o0cp3_di" bpmnElement="ExclusiveGateway_13o0cp3" isMarkerVisible="true">
+        <omgdc:Bounds x="537" y="427" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0oe89pt_di" bpmnElement="SequenceFlow_0oe89pt">
+        <omgdi:waypoint x="487" y="452" />
+        <omgdi:waypoint x="537" y="452" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_0jge1rf_di" bpmnElement="Task_09kj2z0">
+        <omgdc:Bounds x="387" y="412" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0uh84db_di" bpmnElement="SequenceFlow_0uh84db">
+        <omgdi:waypoint x="562" y="427" />
+        <omgdi:waypoint x="562" y="140" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="560" y="281" width="35" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_10s2hnx_di" bpmnElement="SequenceFlow_10s2hnx">
+        <omgdi:waypoint x="587" y="452" />
+        <omgdi:waypoint x="637" y="452" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="590" y="434" width="45" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1tst78p_di" bpmnElement="Task_0qagi64">
+        <omgdc:Bounds x="637" y="412" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_02ddl96_di" bpmnElement="EndEvent_02ddl96">
+        <omgdc:Bounds x="787" y="434" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0c61sd9_di" bpmnElement="SequenceFlow_0c61sd9">
+        <omgdi:waypoint x="737" y="452" />
+        <omgdi:waypoint x="787" y="452" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
