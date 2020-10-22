@@ -13,7 +13,7 @@ import java.util.List;
 
 @Table(name = "TRAIN_INVOICE")
 @Entity(name = "train_Invoice")
-@NamePattern("%s|description")
+@NamePattern("%s|number")
 public class Invoice extends StandardEntity {
     private static final long serialVersionUID = -1727865158963646325L;
 

@@ -30,9 +30,6 @@ import static com.company.train.core.InvoiceReportGenerator.STAGE_VIEW;
 @Service(StagesService.NAME)
 public class StagesServiceBean implements StagesService {
 
-
-
-
     @Inject
     private Persistence persistence;
 
@@ -52,7 +49,7 @@ public class StagesServiceBean implements StagesService {
     public void generateInvoicesAndActsFromStages(List<Stage> stages) {
         for (Stage stage: stages) {
             generateDocuments(stage);
-//            invoiceReportGenerator.generateInvoiceReportFromStage(stage);
+            invoiceReportGenerator.generateInvoiceReportFromStage(stage);
         }
     }
 
