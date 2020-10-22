@@ -36,8 +36,6 @@ public class ContractEdit extends StandardEditor<Contract> {
     private boolean isNewVisit;
 
     @Inject
-    private Metadata metadata;
-    @Inject
     private UserSession userSession;
     @Inject
     private BprocRuntimeService bprocRuntimeService;
@@ -56,7 +54,7 @@ public class ContractEdit extends StandardEditor<Contract> {
 
     @Subscribe(AMOUNT_FIELD)
     public void onAmountFieldValueChange(HasValue.ValueChangeEvent<BigDecimal> event) {
-        if (customerField.getValue() == null)
+        if (customerField.getValue() == null || amountField.getValue()==null)
             return;
         if (customerField.getValue().getEscapeVat()) {
             BigDecimal vat = amountField.getValue().multiply(BigDecimal.valueOf(configuration.getConfig(VatConfig.class).getVat()));
