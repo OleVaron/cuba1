@@ -1,5 +1,6 @@
 package com.company.train.service;
 
+import com.company.train.config.NotificationTaskEmailBodyTemplateConfig;
 import com.company.train.entity.Contract;
 import com.haulmont.addon.bproc.entity.TaskData;
 import com.haulmont.addon.bproc.events.UserTaskAssignedEvent;
@@ -26,7 +27,6 @@ public class ContractStatusServiceBean implements ContractStatusService {
     private static final Logger log = LoggerFactory.getLogger(ContractStatusServiceBean.class);
     public static final String CONTRACT_VIEW = "contract-view";
     public static final String STATUS_FOR_CONTRACT_HAS_BEEN_CHANGED_ON = "statusForContractChangedMailTitle";
-    public static final String COM_HAULMONT_BPROC_REF_NOTIFICATION_TASK_EMAIL_BODY_TEMPLATE = "com/haulmont/bproc/ref/notification/task-email-body.template";
 
     @Inject
     private DataManager dataManager;
@@ -34,6 +34,8 @@ public class ContractStatusServiceBean implements ContractStatusService {
     private EmailService emailService;
     @Inject
     private Messages messages;
+    @Inject
+    private Configuration configuration;
 
     @Override
     public void setStatus(Contract contract, String status) {
@@ -52,7 +54,7 @@ public class ContractStatusServiceBean implements ContractStatusService {
                     email,
                     emailTitle,
                     null,
-                    COM_HAULMONT_BPROC_REF_NOTIFICATION_TASK_EMAIL_BODY_TEMPLATE,
+                    configuration.getConfig(NotificationTaskEmailBodyTemplateConfig.class).getTemplatePath(),
                     templateParameters
             );
 //            emailService.sendEmailAsync(emailInfo);

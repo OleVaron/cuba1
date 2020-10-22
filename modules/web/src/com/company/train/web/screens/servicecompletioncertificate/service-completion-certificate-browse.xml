@@ -40,7 +40,6 @@
                 <column id="amount"/>
                 <column id="vat"/>
                 <column id="totalAmount"/>
-                <column id="description"/>
                 <column id="files"/>
                 <column id="stage"/>
             </columns>

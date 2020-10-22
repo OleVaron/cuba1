@@ -10,8 +10,9 @@ import com.haulmont.cuba.core.entity.annotation.Listeners;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.global.DeletePolicy;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
@@ -56,7 +57,9 @@ public class Contract extends StandardEntity {
     @Temporal(TemporalType.DATE)
     private Date dateTo;
 
-    @Column(name = "AMOUNT")
+    @Column(name = "AMOUNT", nullable = false)
+    @PositiveOrZero
+    @NotNull
     private BigDecimal amount;
 
     @Column(name = "VAT")
@@ -151,16 +154,8 @@ public class Contract extends StandardEntity {
         return totalAmount;
     }
 
-    public void setTotalAmount(BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
     public BigDecimal getVat() {
         return vat;
-    }
-
-    public void setVat(BigDecimal vat) {
-        this.vat = vat;
     }
 
     public Date getDateFrom() {
