@@ -92,31 +92,4 @@ public class StagesServiceBean implements StagesService {
             persistence.getEntityManager().persist(invoice);
     }
 
-    protected void generateReportForInvoice(Stage stage) {
-
-    }
-
-//    protected void generateReportForSCC(Stage stage) {
-//        Transaction tx = persistence.createTransaction();
-//        try {
-//            stage = persistence.getEntityManager().reload(stage, STAGE_VIEW);
-//            ServiceCompletionCertificate invoice = stage.getServiceCompletionCertificate();
-//            Report report = dataManager.load(Report.class)
-//                    .query("select r from report$Report r where r.name = :report_name")
-//                    .parameter(REPORT_NAME, REPORT_FOR_INVOICE).one();
-//
-//            Invoice reloaded = dataManager.load(Invoice.class)
-//                    .query("select i from train_Invoice i where i.number = :number")
-//                    .parameter(NUMBER, invoice.getNumber()).one();
-//            HashMap<String, Object> hm = new HashMap<>();
-//            hm.put(ENTITY, reloaded);
-//            invoice.setFiles(Collections.singletonList(reportService.createAndSaveReport(report, hm, INVOICE)));
-//            persistence.getEntityManager().persist(invoice);
-//            tx.commit();
-//        } finally {
-//            tx.end();
-//        }
-//    }
-
-
 }
