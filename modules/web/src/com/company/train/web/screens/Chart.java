@@ -17,6 +17,7 @@ import java.util.List;
 @UiDescriptor("chart.xml")
 public class Chart extends Screen {
 
+    public static final String CONTRACT_VIEW = "contract-view";
     @Inject
     private CollectionContainer<Contract> contractDC;
     @Inject
@@ -24,20 +25,11 @@ public class Chart extends Screen {
 
     @Subscribe
     private void onInit(InitEvent event) {
-        LoadContext<Contract> contractLoadContext = new LoadContext<Contract>(Contract.class);
+        LoadContext<Contract> contractLoadContext = new LoadContext<>(Contract.class);
         List<Contract> items = new ArrayList<>();
         List<Contract> train_contract = dataManager.load(Contract.class)
-                .query("select c from train_Contract c").view("contract-view").list();
-//        items.add(countryGrowth("UK", 1.7, 3.1));
+                .query("select c from train_Contract c").view(CONTRACT_VIEW).list();
         contractDC.setItems(train_contract);
     }
-
-//    private CountryGrowth countryGrowth(String country, double year2014, double year2015) {
-//        CountryGrowth cg = new CountryGrowth();
-//        cg.setCountry(country);
-//        cg.setYear2014(year2014);
-//        cg.setYear2015(year2015);
-//        return cg;
-//    }
 
 }
