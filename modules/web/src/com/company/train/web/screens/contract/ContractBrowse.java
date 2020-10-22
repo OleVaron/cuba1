@@ -25,6 +25,7 @@ import java.util.Date;
 public class ContractBrowse extends StandardLookup<Contract> {
 
     public static final String CONTRACT_NOT_SELECTED = "Contract.notSelected";
+    public static final String CONTRACT_IS_CREATED = "Contract.invoiceAndSCCCreated";
     public static final String CONTRACTS_TABLE_GENERATE_INVOICE_AND_SCC = "contractsTable.generateInvoiceAndSCC";
     @Inject
     private GroupTable<Contract> contractsTable;
@@ -40,6 +41,7 @@ public class ContractBrowse extends StandardLookup<Contract> {
         Contract contract = contractsTable.getSingleSelected();
         if (contract!=null) {
             stagesService.generateInvoicesAndActsFromStages(contract.getStages());
+            notifications.create().withCaption(messages.getMessage(this.getClass(), CONTRACT_IS_CREATED)).show();
         } else {
             notifications.create().withCaption(messages.getMessage(this.getClass(), CONTRACT_NOT_SELECTED)).show();
         }
