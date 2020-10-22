@@ -20,7 +20,7 @@ import java.util.List;
 @Table(name = "TRAIN_CONTRACT")
 @Entity(name = "train_Contract")
 @Listeners("train_ContractEntityListener")
-@NamePattern("%s|customer")
+@NamePattern("%s|number")
 public class Contract extends StandardEntity {
     private static final long serialVersionUID = 2310625483122392286L;
 
