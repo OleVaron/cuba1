@@ -31,6 +31,7 @@ public class StagesServiceBean implements StagesService {
     public static final String ENTITY = "entity";
     public static final String NUMBER = "number";
     public static final String REPORT_FOR_INVOICE = "Report for Invoice";
+    public static final String STAGE_VIEW = "stage-view";
 
     @Inject
     private Persistence persistence;
@@ -59,7 +60,7 @@ public class StagesServiceBean implements StagesService {
     protected void generateDocuments(Stage stage) {
         Transaction tx = persistence.createTransaction();
         try {
-            stage = persistence.getEntityManager().reload(stage, "stage-view");
+            stage = persistence.getEntityManager().reload(stage, STAGE_VIEW);
             generateInvoiceFromStage(stage);
             generateServiceCompletionCertificateFromStage(stage);
             tx.commit();
@@ -98,7 +99,7 @@ public class StagesServiceBean implements StagesService {
     protected void generateReportForInvoice(Stage stage) {
         Transaction tx = persistence.createTransaction();
         try {
-            stage = persistence.getEntityManager().reload(stage, "stage-view");
+            stage = persistence.getEntityManager().reload(stage, STAGE_VIEW);
             Invoice invoice = stage.getInvoice();
             Report report = dataManager.load(Report.class)
                     .query("select r from report$Report r where r.name = :report_name")

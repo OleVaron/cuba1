@@ -18,6 +18,7 @@ import java.util.Set;
 @Component(TaskCompletedNotificationSender.NAME)
 public class TaskCompletedNotificationSender {
     public static final String NAME = "ref_TaskCompletedNotificationSender";
+    public static final String CONTRACT = "contract";
 
     @Inject
     private BprocRuntimeService bprocRuntimeService;
@@ -39,7 +40,7 @@ public class TaskCompletedNotificationSender {
                 }
             }
         }
-        Contract contract = (Contract) bprocRuntimeService.getVariable(event.getTaskData().getExecutionId(), "contract");
+        Contract contract = (Contract) bprocRuntimeService.getVariable(event.getTaskData().getExecutionId(), CONTRACT);
         contractStatusService.setStatus(contract, outcomeId);
     }
 }
