@@ -25,8 +25,6 @@ public class Chart extends Screen {
 
     @Subscribe
     private void onInit(InitEvent event) {
-        LoadContext<Contract> contractLoadContext = new LoadContext<>(Contract.class);
-        List<Contract> items = new ArrayList<>();
         List<Contract> train_contract = dataManager.load(Contract.class)
                 .query("select c from train_Contract c").view(CONTRACT_VIEW).list();
         contractDC.setItems(train_contract);
