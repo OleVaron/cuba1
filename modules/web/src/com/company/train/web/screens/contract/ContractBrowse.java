@@ -7,6 +7,7 @@ import com.haulmont.charts.gui.components.charts.PieChart;
 import com.haulmont.charts.gui.data.MapDataItem;
 import com.haulmont.cuba.core.app.PersistenceManagerService;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
+import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.core.global.Metadata;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.components.Action;
@@ -23,6 +24,8 @@ import java.util.Date;
 @LoadDataBeforeShow
 public class ContractBrowse extends StandardLookup<Contract> {
 
+    public static final String CONTRACT_NOT_SELECTED = "Contract.notSelected";
+    public static final String CONTRACTS_TABLE_GENERATE_INVOICE_AND_SCC = "contractsTable.generateInvoiceAndSCC";
     @Inject
     private GroupTable<Contract> contractsTable;
     @Inject
@@ -30,15 +33,15 @@ public class ContractBrowse extends StandardLookup<Contract> {
     @Inject
     private Notifications notifications;
     @Inject
-    private PieChart pieChart;
+    private Messages messages;
 
-    @Subscribe("contractsTable.generateInvoiceAndSCC")
+    @Subscribe(CONTRACTS_TABLE_GENERATE_INVOICE_AND_SCC)
     public void onContractsTableGenerateInvoiceAndSCC(Action.ActionPerformedEvent event) {
         Contract contract = contractsTable.getSingleSelected();
         if (contract!=null) {
             stagesService.generateInvoicesAndActsFromStages(contract.getStages());
         } else {
-            notifications.create().withCaption("contract not selected").show();//todo msg to bundle
+            notifications.create().withCaption(messages.getMessage(this.getClass(), CONTRACT_NOT_SELECTED)).show();
         }
     }
 

@@ -62,9 +62,6 @@
                 <button id="generateInvoiceAndSCCBtn" action="contractsTable.generateInvoiceAndSCC"/>
             </buttonsPanel>
         </groupTable>
-        <chart:pieChart id="pieChart"
-                        titleField="key"
-                        valueField="value"/>
         <hbox id="lookupActions" spacing="true" visible="false">
             <button action="lookupSelectAction"/>
             <button action="lookupCancelAction"/>

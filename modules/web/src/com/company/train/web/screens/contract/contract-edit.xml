@@ -9,7 +9,7 @@
             <view extends="_local">
                 <property name="customer" view="_minimal"/>
                 <property name="performer" view="_minimal"/>
-                <property name="stages" view="_minimal"/>
+                <property name="stages" view="_local"/>
             </view>
             <loader/>
             <collection id="stagesDc" property="stages"/>
@@ -50,6 +50,8 @@
                     </actions>
                     <columns>
                         <column id="name"/>
+                        <column id="dateFrom"/>
+                        <column id="dateTo"/>
                     </columns>
                     <buttonsPanel>
                         <button action="stagesTable.create"/>
