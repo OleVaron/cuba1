@@ -4,10 +4,8 @@ import com.company.train.entity.Contract;
 import com.haulmont.addon.bproc.entity.TaskData;
 import com.haulmont.addon.bproc.events.UserTaskAssignedEvent;
 import com.haulmont.cuba.core.app.EmailService;
-import com.haulmont.cuba.core.global.DataManager;
-import com.haulmont.cuba.core.global.EmailInfo;
-import com.haulmont.cuba.core.global.Messages;
-import com.haulmont.cuba.core.global.View;
+import com.haulmont.cuba.core.app.LocalizedMessageService;
+import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.security.entity.User;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
@@ -27,7 +25,7 @@ public class ContractStatusServiceBean implements ContractStatusService {
 
     private static final Logger log = LoggerFactory.getLogger(ContractStatusServiceBean.class);
     public static final String CONTRACT_VIEW = "contract-view";
-    public static final String STATUS_FOR_CONTRACT_HAS_BEEN_CHANGED_ON = "Status for contract has been changed on ";
+    public static final String STATUS_FOR_CONTRACT_HAS_BEEN_CHANGED_ON = "statusForContractChangedMailTitle";
     public static final String COM_HAULMONT_BPROC_REF_NOTIFICATION_TASK_EMAIL_BODY_TEMPLATE = "com/haulmont/bproc/ref/notification/task-email-body.template";
 
     @Inject
@@ -48,14 +46,13 @@ public class ContractStatusServiceBean implements ContractStatusService {
     protected void sendEmail(Contract contract, String status) {
         Contract reloadedContract = dataManager.reload(contract , CONTRACT_VIEW);
         for (String email: Arrays.asList(reloadedContract.getPerformer().getEmail(), reloadedContract.getCustomer().getEmail())) {
-            String emailTitle = STATUS_FOR_CONTRACT_HAS_BEEN_CHANGED_ON + status;
-            String emailBodyTemplatePath = COM_HAULMONT_BPROC_REF_NOTIFICATION_TASK_EMAIL_BODY_TEMPLATE;
+            String emailTitle = messages.getMessage(this.getClass(), STATUS_FOR_CONTRACT_HAS_BEEN_CHANGED_ON) + status;
             Map<String, Serializable> templateParameters = new HashMap<>();
             EmailInfo emailInfo = new EmailInfo(
                     email,
                     emailTitle,
                     null,
-                    emailBodyTemplatePath,
+                    COM_HAULMONT_BPROC_REF_NOTIFICATION_TASK_EMAIL_BODY_TEMPLATE,
                     templateParameters
             );
 //            emailService.sendEmailAsync(emailInfo);
