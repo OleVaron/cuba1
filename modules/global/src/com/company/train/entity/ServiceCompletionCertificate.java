@@ -7,6 +7,7 @@ import com.haulmont.cuba.core.entity.StandardEntity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "TRAIN_SERVICE_COMPLETION_CERTIFICATE")
 @Entity(name = "train_ServiceCompletionCertificate")
@@ -34,13 +35,23 @@ public class ServiceCompletionCertificate extends StandardEntity {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FILES_ID")
-    private FileDescriptor files;
+    @ManyToMany
+    @JoinTable(name = "TRAIN_SERVICE_COMPLETION_CERTIFICATE_FILE_DESCRIPTOR_LINK",
+            joinColumns = @JoinColumn(name = "SERVICE_COMPLETION_CERTIFICATE_ID"),
+            inverseJoinColumns = @JoinColumn(name = "FILE_DESCRIPTOR_ID"))
+    private List<FileDescriptor> files;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "STAGE_ID")
     private Stage stage;
+
+    public void setFiles(List<FileDescriptor> files) {
+        this.files = files;
+    }
+
+    public List<FileDescriptor> getFiles() {
+        return files;
+    }
 
     public Stage getStage() {
         return stage;
@@ -48,14 +59,6 @@ public class ServiceCompletionCertificate extends StandardEntity {
 
     public void setStage(Stage stage) {
         this.stage = stage;
-    }
-
-    public FileDescriptor getFiles() {
-        return files;
-    }
-
-    public void setFiles(FileDescriptor files) {
-        this.files = files;
     }
 
     public String getDescription() {

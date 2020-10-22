@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://invoiceEdit.caption"
+        focusComponent="form"
+        messagesPack="com.company.train.web.screens.invoice">
+    <data>
+        <instance id="invoiceDc"
+                  class="com.company.train.entity.Invoice">
+            <view extends="_local">
+                <property name="files" view="_minimal"/>
+            </view>
+            <loader/>
+            <collection id="filesDc" property="files"/>
+        </instance>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="editActions" spacing="true">
+        <form id="form" dataContainer="invoiceDc">
+            <column width="350px">
+                <textField id="numberField" property="number"/>
+                <dateField id="dateField" property="date"/>
+                <textField id="amountField" property="amount"/>
+                <textField id="vatField" property="vat"/>
+                <textField id="totalAmountField" property="totalAmount"/>
+                <textField id="descriptionField" property="description"/>
+            </column>
+        </form>
+        <groupBox id="filesBox" caption="msg://com.company.train.entity/Invoice.files">
+            <table id="filesTable" dataContainer="filesDc" width="100%" height="200px">
+                <actions>
+                    <action id="add" type="add"/>
+                    <action id="exclude" type="exclude"/>
+                </actions>
+                <columns>
+                    <column id="name"/>
+                    <column id="createDate"/>
+                    <column id="extension"/>
+                </columns>
+                <buttonsPanel>
+                    <button action="filesTable.add"/>
+                    <button action="filesTable.exclude"/>
+                </buttonsPanel>
+            </table>
+        </groupBox>
+        <hbox id="editActions" spacing="true">
+            <button action="windowCommitAndClose"/>
+            <button action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

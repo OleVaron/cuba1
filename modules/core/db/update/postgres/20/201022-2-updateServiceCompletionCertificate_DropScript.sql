@@ -1,0 +1,1 @@
+alter table TRAIN_SERVICE_COMPLETION_CERTIFICATE drop column FILES_ID__U72627 cascade ;

@@ -8,5 +8,4 @@ import com.company.train.entity.ServiceCompletionCertificate;
 @LookupComponent("serviceCompletionCertificatesTable")
 @LoadDataBeforeShow
 public class ServiceCompletionCertificateBrowse extends StandardLookup<ServiceCompletionCertificate> {
-
 }

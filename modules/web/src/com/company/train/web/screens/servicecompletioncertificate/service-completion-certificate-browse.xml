@@ -9,7 +9,6 @@
                     class="com.company.train.entity.ServiceCompletionCertificate">
             <view extends="_local">
                 <property name="files" view="_minimal"/>
-                <property name="stage" view="_minimal"/>
             </view>
             <loader id="serviceCompletionCertificatesDl">
                 <query>
@@ -40,8 +39,7 @@
                 <column id="amount"/>
                 <column id="vat"/>
                 <column id="totalAmount"/>
-                <column id="files"/>
-                <column id="stage"/>
+                <column id="description"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"
