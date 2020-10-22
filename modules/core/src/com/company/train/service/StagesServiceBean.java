@@ -32,6 +32,7 @@ public class StagesServiceBean implements StagesService {
     public static final String NUMBER = "number";
     public static final String REPORT_FOR_INVOICE = "Report for Invoice";
     public static final String STAGE_VIEW = "stage-view";
+    public static final String REPORT_NAME = "report_name";
 
     @Inject
     private Persistence persistence;
@@ -103,7 +104,7 @@ public class StagesServiceBean implements StagesService {
             Invoice invoice = stage.getInvoice();
             Report report = dataManager.load(Report.class)
                     .query("select r from report$Report r where r.name = :report_name")
-                    .parameter("report_name", REPORT_FOR_INVOICE).one();
+                    .parameter(REPORT_NAME, REPORT_FOR_INVOICE).one();
 
             Invoice reloaded = dataManager.load(Invoice.class)
                     .query("select i from train_Invoice i where i.number = :number")
