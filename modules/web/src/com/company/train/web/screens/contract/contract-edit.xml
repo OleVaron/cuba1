@@ -36,9 +36,11 @@
                     <dateField id="signedDateField" property="signedDate"/>
                     <dateField id="dateFromField" property="dateFrom"/>
                     <dateField id="dateToField" property="dateTo"/>
-                    <textField id="amountField" property="amount"/>
                     <textField id="customerSignerField" property="customerSigner"/>
                     <textField id="performerSignerField" property="performerSigner"/>
+                    <textField id="amountField" property="amount"/>
+                    <textField id="vatField" property="vat"/>
+                    <textField id="totalAmountField" property="totalAmount"/>
                 </column>
             </form>
             <groupBox id="stagesBox" caption="msg://com.company.train.entity/Contract.stages">

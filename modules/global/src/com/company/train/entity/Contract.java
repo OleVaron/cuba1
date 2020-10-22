@@ -86,6 +86,14 @@ public class Contract extends StandardEntity {
     @OneToMany(mappedBy = "contract")
     private List<Stage> stages;
 
+    public void setTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public void setVat(BigDecimal vat) {
+        this.vat = vat;
+    }
+
     public void setStatus(String status) {
         this.status = status;
     }
