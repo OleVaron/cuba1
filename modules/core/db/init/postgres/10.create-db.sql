@@ -20,7 +20,7 @@ create table TRAIN_CONTRACT (
     SIGNED_DATE date,
     DATE_FROM date,
     DATE_TO date,
-    AMOUNT decimal(19, 2),
+    AMOUNT decimal(19, 2) not null,
     VAT decimal(19, 2),
     TOTAL_AMOUNT decimal(19, 2),
     CUSTOMER_SIGNER varchar(255),
