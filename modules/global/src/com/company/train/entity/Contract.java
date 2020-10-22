@@ -203,14 +203,4 @@ public class Contract extends StandardEntity {
         this.customer = customer;
     }
 
-    @PostConstruct
-    public void postConstruct() {
-
-    }
-
-    @PrePersist
-    public void prePersist() {
-
-    }
-
 }
