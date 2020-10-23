@@ -32,10 +32,8 @@ public class StagesServiceBean implements StagesService {
 
     @Inject
     private Persistence persistence;
-
     @Inject
     private UniqueNumbersAPI uniqueNumbersAPI;
-
     @Inject
     private Metadata metadata;
     @Inject

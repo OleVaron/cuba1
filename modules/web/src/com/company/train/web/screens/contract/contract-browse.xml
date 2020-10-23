@@ -36,7 +36,7 @@
                 <action id="create" type="create"/>
                 <action id="edit" type="edit"/>
                 <action id="remove" type="remove"/>
-                <action id="generateInvoiceAndSCC" caption="msg://generateInvoice"/>
+                <action id="generateInvoiceAndSCC" type="generateInvoiceAndSCC" caption="msg://generateInvoice"/>
             </actions>
             <columns>
                 <column id="customer"/>
@@ -59,7 +59,7 @@
                 <button id="createBtn" action="contractsTable.create"/>
                 <button id="editBtn" action="contractsTable.edit"/>
                 <button id="removeBtn" action="contractsTable.remove"/>
-                <button id="generateInvoiceAndSCCBtn" action="contractsTable.generateInvoiceAndSCC"/>
+                <button id="generateInvoiceAndSCCBtn2" action="contractsTable.generateInvoiceAndSCC"/>
             </buttonsPanel>
         </groupTable>
         <hbox id="lookupActions" spacing="true" visible="false">
