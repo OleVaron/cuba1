@@ -7,6 +7,7 @@ import com.company.train.entity.Contract;
 import com.company.train.entity.Stage;
 import com.haulmont.cuba.core.EntityManager;
 import com.haulmont.cuba.core.Persistence;
+import com.haulmont.cuba.core.Transaction;
 import com.haulmont.cuba.core.app.UniqueNumbersAPI;
 import com.haulmont.cuba.core.global.Configuration;
 import com.haulmont.cuba.core.global.DataManager;
@@ -17,6 +18,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 @Component("train_ContractEntityListener")
 public class ContractEntityListener implements BeforeInsertEntityListener<Contract> {
@@ -38,8 +40,11 @@ public class ContractEntityListener implements BeforeInsertEntityListener<Contra
         contract.setNumber(((Long)(uniqueNumbersAPI.getNextNumber(configuration.getConfig(ContractNumSeqConfig.class).getSequenceName()))).intValue());
         populateSummary(contract);
         if (CollectionUtils.isEmpty(contract.getStages())) {
-            persistence.getEntityManager().persist(getStageFromContract(contract));
+            Stage stage = getStageFromContract(contract);
+            entityManager.persist(stage);
+            contract.setStages(Arrays.asList(stage));
         }
+        entityManager.persist(contract);
     }
 
     protected void populateSummary(Contract contract) {
@@ -53,6 +58,7 @@ public class ContractEntityListener implements BeforeInsertEntityListener<Contra
     }
 
     protected Stage getStageFromContract(Contract contract) {
+
         Stage stage = metadata.create(Stage.class);
 
         stage.setName(configuration.getConfig(DefaultStageNameConfig.class).getDefaultName());

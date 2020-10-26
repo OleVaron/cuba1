@@ -5,7 +5,7 @@ import com.haulmont.chile.core.datatypes.impl.EnumClass;
 import javax.annotation.Nullable;
 
 
-public enum ContractStausEnum implements EnumClass<Integer> {
+public enum ContractStatusEnum implements EnumClass<Integer> {
 
     NEW(10),
     ON_APPROVAL(20),
@@ -15,7 +15,7 @@ public enum ContractStausEnum implements EnumClass<Integer> {
 
     private Integer id;
 
-    ContractStausEnum(Integer value) {
+    ContractStatusEnum(Integer value) {
         this.id = value;
     }
 
@@ -24,8 +24,8 @@ public enum ContractStausEnum implements EnumClass<Integer> {
     }
 
     @Nullable
-    public static ContractStausEnum fromId(Integer id) {
-        for (ContractStausEnum at : ContractStausEnum.values()) {
+    public static ContractStatusEnum fromId(Integer id) {
+        for (ContractStatusEnum at : ContractStatusEnum.values()) {
             if (at.getId().equals(id)) {
                 return at;
             }
