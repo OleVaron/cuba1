@@ -49,7 +49,7 @@ public class ContractStatusServiceBean implements ContractStatusService {
         Contract reloadedContract = dataManager.reload(contract , CONTRACT_VIEW);
         for (String email: Arrays.asList(reloadedContract.getPerformer().getEmail(), reloadedContract.getCustomer().getEmail())) {
             String emailTitle = messages.getMessage(this.getClass(), STATUS_FOR_CONTRACT_HAS_BEEN_CHANGED_ON) + status;
-            EmailInfoBuilder.create()
+            EmailInfo emailInfo = EmailInfoBuilder.create()
                     .setAddresses(email)
                     .setCaption(emailTitle)
                     .setFrom(null)
