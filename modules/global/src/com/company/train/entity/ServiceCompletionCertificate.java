@@ -11,7 +11,7 @@ import java.util.List;
 
 @Table(name = "TRAIN_SERVICE_COMPLETION_CERTIFICATE")
 @Entity(name = "train_ServiceCompletionCertificate")
-@NamePattern("%s|description")
+@NamePattern("%s|number")
 public class ServiceCompletionCertificate extends StandardEntity {
     private static final long serialVersionUID = -6238700811443480308L;
 

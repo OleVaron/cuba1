@@ -9,5 +9,6 @@
         <class>com.company.train.entity.Stage</class>
         <class>com.company.train.entity.Invoice</class>
         <class>com.company.train.entity.ServiceCompletionCertificate</class>
+        <class>com.company.train.entity.Type</class>
     </persistence-unit>
 </persistence>

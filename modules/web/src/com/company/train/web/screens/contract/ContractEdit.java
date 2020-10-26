@@ -56,7 +56,7 @@ public class ContractEdit extends StandardEditor<Contract> {
     public void onAmountFieldValueChange(HasValue.ValueChangeEvent<BigDecimal> event) {
         if (customerField.getValue() == null || amountField.getValue()==null||!isNewVisit)
             return;
-        if (customerField.getValue().getEscapeVat()) {
+        if (!customerField.getValue().getEscapeVat()) {
             BigDecimal vat = amountField.getValue().multiply(BigDecimal.valueOf(configuration.getConfig(VatConfig.class).getVat()));
             vatField.setValue(vat);
             totalAmountField.setValue(vat.add(amountField.getValue()));

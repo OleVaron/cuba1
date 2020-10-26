@@ -167,3 +167,21 @@ create table TRAIN_SERVICE_COMPLETION_CERTIFICATE_FILE_DESCRIPTOR_LINK (
     primary key (SERVICE_COMPLETION_CERTIFICATE_ID, FILE_DESCRIPTOR_ID)
 )^
 -- end TRAIN_SERVICE_COMPLETION_CERTIFICATE_FILE_DESCRIPTOR_LINK
+-- begin TRAIN_TYPE
+create table TRAIN_TYPE (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    FIX_PRICE decimal(19, 2),
+    TIME_AND_MATERIAL varchar(255),
+    OUT_STAFF varchar(255),
+    --
+    primary key (ID)
+)^
+-- end TRAIN_TYPE

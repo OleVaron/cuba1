@@ -3,7 +3,6 @@ package com.company.train.core;
 import com.company.train.entity.Invoice;
 import com.company.train.entity.Stage;
 import com.haulmont.cuba.core.Persistence;
-import com.haulmont.cuba.core.Transaction;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.reports.app.service.ReportService;
 import com.haulmont.reports.entity.Report;
