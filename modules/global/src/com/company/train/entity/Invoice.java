@@ -45,10 +45,15 @@ public class Invoice extends StandardEntity {
             joinColumns = @JoinColumn(name = "INVOICE_ID"),
             inverseJoinColumns = @JoinColumn(name = "FILE_DESCRIPTOR_ID"))
     private List<FileDescriptor> files;
+
     @JoinColumn(name = "CONTACT_ID")
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDeleteInverse(DeletePolicy.CASCADE)
     private Contract contact;
+
+    public void setContact(Contract contact) {
+        this.contact = contact;
+    }
 
     public Contract getContact() {
         return contact;

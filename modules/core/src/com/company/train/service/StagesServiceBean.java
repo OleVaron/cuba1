@@ -72,6 +72,7 @@ public class StagesServiceBean implements StagesService {
             scc.setDate(timeSource.currentTimestamp());
             scc.setDescription(stage.getDescription());
             scc.setNumber(((Long)uniqueNumbersAPI.getNextNumber(configuration.getConfig(SCCNumSeqConfig.class).getSequenceName())).intValue());
+            stage.setServiceCompletionCertificate(scc);
             persistence.getEntityManager().persist(scc);
     }
 
@@ -84,6 +85,8 @@ public class StagesServiceBean implements StagesService {
             invoice.setDate(timeSource.currentTimestamp());
             invoice.setDescription(stage.getDescription());
             invoice.setNumber(((Long)uniqueNumbersAPI.getNextNumber(configuration.getConfig(InvoiceNumSeqConfig.class).getSequenceName())).intValue());
+            invoice.setContact(stage.getContract());
+            stage.setInvoice(invoice);
             persistence.getEntityManager().persist(invoice);
     }
 
