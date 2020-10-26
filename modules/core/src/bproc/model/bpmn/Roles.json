@@ -1,0 +1,12 @@
+[
+  {
+    "_entityName": "sec$Role",
+    "id": "adf751a4-85b4-f7db-4ed7-7997d2c99c68",
+    "securityScope": "GENERIC_UI",
+    "type": "STANDARD",
+    "version": 1,
+    "locSecurityScope": "Generic UI",
+    "permissions": [],
+    "name": "manager"
+  }
+]
